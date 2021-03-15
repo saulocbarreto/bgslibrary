@@ -3,6 +3,8 @@
 FET - FOREGROUND EVALUATION TOOL
 
 @author: Andrews Sobral
+
+Modifications made by Saulo Barreto in order to deal with colored-ground truth from LASIESTA
 """
 
 import numpy as np
@@ -22,8 +24,8 @@ path_sc = 'SC/'
 if not os.path.exists(path_sc):
 	os.makedirs(path_sc)
 
-files_gt = [ f for f in listdir(path_gt) if isfile(join(path_gt,f)) ]
-files_fg = [ f for f in listdir(path_gt) if isfile(join(path_gt,f)) ]
+files_gt = [ f for f in sorted(listdir(path_gt)) if isfile(join(path_gt,f)) ]
+files_fg = [ f for f in sorted(listdir(path_fg)) if isfile(join(path_fg,f)) ]
 
 TP = .0 # True positive pixels
 FP = .0 # False positive pixels
@@ -59,7 +61,7 @@ for file_gt, file_fg in zip(files_gt, files_fg):
     for j in xrange(cols):
       pixel_gt = img_gt[i,j]
       pixel_fg = img_fg[i,j]        
-      if(pixel_gt == 255 and pixel_fg == 255):
+      if(pixel_gt != 0 and pixel_fg == 255):
         TP = TP + 1
         img_res[i,j] = white
       if(pixel_gt == 0 and pixel_fg == 255):
@@ -68,12 +70,12 @@ for file_gt, file_fg in zip(files_gt, files_fg):
       if(pixel_gt == 0 and pixel_fg == 0):
         TN = TN + 1
         img_res[i,j] = black
-      if(pixel_gt == 255 and pixel_fg == 0):
+      if(pixel_gt != 0 and pixel_fg == 0):
         FN = FN + 1
         img_res[i,j] = green
-  cv2.imshow('GT',img_gt)
-  cv2.imshow('FG',img_fg)
-  cv2.imshow('SC',img_res)
+  #cv2.imshow('GT',img_gt)
+  #cv2.imshow('FG',img_fg)
+  #cv2.imshow('SC',img_res)
   cv2.imwrite(path_sc + file_gt, img_res)
   cv2.waitKey(1) # 33
   k = k + 1

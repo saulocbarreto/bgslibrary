@@ -1,3 +1,6 @@
+Author: Andrews Sobral
+Modified by Saulo Barreto in order to deal with colored ground-truth and to evaluate multiple algorithms in 1 execution.
+
 FET - FOREGROUND EVALUATION TOOL
 
 Implemented in Python 2.7
